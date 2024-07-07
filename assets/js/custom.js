@@ -1,139 +1,134 @@
-/**	
-	* Template Name: Kindle
-	* Version: 1.0	
-	* Template Scripts
-	* Author: MarkUps
-	* Author URI: http://www.markups.io/
+$.sidebarMenu = function (menu) {
+	var animationSpeed = 300;
 
-	Custom JS
-	
-	1. FIXED MENU
-	2. MENU SMOOTH SCROLLING
-	3. GOOGLE MAP
-	4. READER TESTIMONIALS ( SLICK SLIDER )
-	5. MOBILE MENU CLOSE 
-	
-**/
+	$(menu).on("click", "li a", function (e) {
+		var $this = $(this);
+		var checkElement = $this.next();
 
+		if (checkElement.is(".treeview-menu") && checkElement.is(":visible")) {
+			checkElement.slideUp(animationSpeed, function () {
+				checkElement.removeClass("menu-open");
+			});
+			checkElement.parent("li").removeClass("active");
+		}
 
+		//If the menu is not visible
+		else if (
+			checkElement.is(".treeview-menu") &&
+			!checkElement.is(":visible")
+		) {
+			//Get the parent menu
+			var parent = $this.parents("ul").first();
+			//Close all open menus within the parent
+			var ul = parent.find("ul:visible").slideUp(animationSpeed);
+			//Remove the menu-open class from the parent
+			ul.removeClass("menu-open");
+			//Get the parent li
+			var parent_li = $this.parent("li");
 
-(function( $ ){
+			//Open the target menu and add the menu-open class
+			checkElement.slideDown(animationSpeed, function () {
+				//Add the class active to the parent li
+				checkElement.addClass("menu-open");
+				parent.find("li.active").removeClass("active");
+				parent_li.addClass("active");
+			});
+		}
+		//if this isn't a link, prevent the page from being redirected
+		if (checkElement.is(".treeview-menu")) {
+			e.preventDefault();
+		}
+	});
+};
+$.sidebarMenu($(".sidebar-menu"));
 
+// Custom Sidebar JS
+jQuery(function ($) {
+	//toggle sidebar
+	$("#toggle-sidebar").on("click", function () {
+		$(".page-wrapper").toggleClass("toggled");
+	});
 
-	/* ----------------------------------------------------------- */
-	/*  1. FIXED MENU
-	/* ----------------------------------------------------------- */
+	// Pin sidebar on click
+	$("#pin-sidebar").on("click", function () {
+		if ($(".page-wrapper").hasClass("pinned")) {
+			// unpin sidebar when hovered
+			$(".page-wrapper").removeClass("pinned");
+			$("#sidebar").unbind("hover");
+		} else {
+			$(".page-wrapper").addClass("pinned");
+			$("#sidebar").hover(
+				function () {
+					console.log("mouseenter");
+					$(".page-wrapper").addClass("sidebar-hovered");
+				},
+				function () {
+					console.log("mouseout");
+					$(".page-wrapper").removeClass("sidebar-hovered");
+				}
+			);
+		}
+	});
 
+	// Pinned sidebar
+	$(function () {
+		$(".page-wrapper").hasClass("pinned");
+		$("#sidebar").hover(
+			function () {
+				console.log("mouseenter");
+				$(".page-wrapper").addClass("sidebar-hovered");
+			},
+			function () {
+				console.log("mouseout");
+				$(".page-wrapper").removeClass("sidebar-hovered");
+			}
+		);
+	});
 
-		jQuery(window).bind('scroll', function () {
-    		if ($(window).scrollTop() > 150) {
+	// Toggle sidebar overlay
+	$("#overlay").on("click", function () {
+		$(".page-wrapper").toggleClass("toggled");
+	});
 
-		        $('#mu-header').addClass('mu-fixed-nav');
-		        
-			    } else {
-			    $('#mu-header').removeClass('mu-fixed-nav');
+	// Added by Srinu
+	$(function () {
+		// When the window is resized,
+		$(window).resize(function () {
+			// When the width and height meet your specific requirements or lower
+			if ($(window).width() <= 768) {
+				$(".page-wrapper").removeClass("pinned");
 			}
 		});
-
-		
-	/* ----------------------------------------------------------- */
-	/*  2. MENU SMOOTH SCROLLING
-	/* ----------------------------------------------------------- */ 
-
-		//MENU SCROLLING WITH ACTIVE ITEM SELECTED
-
-		// Cache selectors
-		var lastId,
-		topMenu = $(".mu-menu"),
-		topMenuHeight = topMenu.outerHeight()+13,
-		// All list items
-		menuItems = topMenu.find('a[href^=\\#]'),
-		// Anchors corresponding to menu items
-		scrollItems = menuItems.map(function(){
-		  var item = $($(this).attr("href"));
-		  if (item.length) { return item; }
+		// When the window is resized,
+		$(window).resize(function () {
+			// When the width and height meet your specific requirements or lower
+			if ($(window).width() >= 768) {
+				$(".page-wrapper").removeClass("toggled");
+			}
 		});
+	});
+});
 
-		// Bind click handler to menu items
-		// so we can get a fancy scroll animation
-		menuItems.click(function(e){
-		  var href = $(this).attr("href"),
-		      offsetTop = href === "#" ? 0 : $(href).offset().top-topMenuHeight+22;
-		  jQuery('html, body').stop().animate({ 
-		      scrollTop: offsetTop
-		  }, 1500);
-		  e.preventDefault();
-		});
+/***********
+***********
+***********
+	Bootstrap JS 
+***********
+***********
+***********/
 
-		// Bind to scroll
-		jQuery(window).scroll(function(){
-		   // Get container scroll position
-		   var fromTop = $(this).scrollTop()+topMenuHeight;
-		   
-		   // Get id of current scroll item
-		   var cur = scrollItems.map(function(){
-		     if ($(this).offset().top < fromTop)
-		       return this;
-		   });
-		   // Get the id of the current element
-		   cur = cur[cur.length-1];
-		   var id = cur && cur.length ? cur[0].id : "";
-		   
-		   if (lastId !== id) {
-		       lastId = id;
-		       // Set/remove active class
-		       menuItems
-		         .parent().removeClass("active")
-		         .end().filter("[href=\\#"+id+"]").parent().addClass("active");
-		   }           
-		})
+// Tooltip
+var tooltipTriggerList = [].slice.call(
+	document.querySelectorAll('[data-bs-toggle="tooltip"]')
+);
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+	return new bootstrap.Tooltip(tooltipTriggerEl);
+});
 
-
-	/* ----------------------------------------------------------- */
-	/*  3. GOOGLE MAP
-	/* ----------------------------------------------------------- */ 
-		    
-	    $('#mu-google-map').click(function () {
-
-		    $('#mu-google-map iframe').css("pointer-events", "auto");
-
-		});
-		
-		$("#mu-google-map").mouseleave(function() {
-
-		  $('#mu-google-map iframe').css("pointer-events", "none"); 
-
-		});
-		
-		
-
-	/* ----------------------------------------------------------- */
-	/*  4. READER TESTIMONIALS (SLICK SLIDER)
-	/* ----------------------------------------------------------- */
-
-		$('.mu-testimonial-slide').slick({
-			arrows: false,
-			dots: true,
-			infinite: true,
-			speed: 500,
-			autoplay: true,
-			cssEase: 'linear'
-		});
-
-	/* ----------------------------------------------------------- */
-	/*  5. MOBILE MENU CLOSE 
-	/* ----------------------------------------------------------- */ 
-
-		jQuery('.mu-menu').on('click', 'li a', function() {
-		  $('.mu-navbar .in').collapse('hide');
-		});
-
-
-
-	
-	
-})( jQuery );
-
-
-  
-	
+// Popover
+var popoverTriggerList = [].slice.call(
+	document.querySelectorAll('[data-bs-toggle="popover"]')
+);
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+	return new bootstrap.Popover(popoverTriggerEl);
+});

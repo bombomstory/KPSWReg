@@ -1,5 +1,11 @@
-<div class="app-header d-flex align-items-center">
+<?php
 
+$s_firstname = (empty($_SESSION["firstname"])) ? "ผู้ใช้งาน" : $_SESSION["firstname"];
+$s_lastname = (empty($_SESSION["lastname"])) ? "ทั่วไป" : $_SESSION["lastname"];
+$s_picture = (empty($_SESSION["picture"])) ? "user.png" : $_SESSION["picture"];
+
+?>
+<div class="app-header d-flex align-items-center">
 <!-- Toggle buttons start -->
 <div class="d-flex">
     <button class="toggle-sidebar" id="toggle-sidebar">
@@ -211,8 +217,8 @@
     <div class="dropdown ms-2">
         <a id="userSettings" class="dropdown-toggle d-flex py-2 align-items-center text-decoration-none" href="#!"
             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="assets/images/user.png" class="rounded-2 img-3x" alt="Bootstrap Gallery" />
-            <span class="ms-2 text-truncate d-lg-block d-none">Anne Santiago</span>
+            <img src="assets/images/<?=$s_picture;?>" class="rounded-2 img-3x" alt="Bootstrap Gallery" />
+            <span class="ms-2 text-truncate d-lg-block d-none"><?=$s_firstname;?> <?=$s_lastname;?></span>
         </a>
         <div class="dropdown-menu dropdown-menu-end shadow-lg">
             <div class="header-action-links mx-3 gap-2">

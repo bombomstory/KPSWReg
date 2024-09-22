@@ -1,4 +1,6 @@
 <?php
+include("config.kpswreg.inc.php");
+
 $role = (empty($_REQUEST["role"])) ? "guest" : $_REQUEST["role"];
 $do = (empty($_GET["do"])) ? "main" : $_GET["do"];
 
@@ -24,6 +26,9 @@ function checkAction($do){
 			break;
 		case "treeTeacherMain":
 			include("maintenance.php");
+			break;
+		case "checkLogin":
+			include("checkLogin.php");
 			break;
 		default:
 			echo "<h1>ท่านไม่มีสิทธิ์ในการเข้าใช้งานระบบนี้!!!!</h1>";

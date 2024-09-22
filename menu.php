@@ -39,10 +39,10 @@ switch ($role) {
             </a>
             <ul class="treeview-menu">
                 <li>
-                    <a href="index.php?role=student&do=treeEvalTeacher">ผลประเมินครูที่ปรึกษา</a>
+                    <a href="index.php?role=student&do=treeEvalTeacher">ประเมินครูที่ปรึกษา</a>
                 </li>
                 <li>
-                    <a href="index.php?role=student&do=treeEvalTeacher">ผลประเมินครูผู้สอน</a>
+                    <a href="index.php?role=student&do=treeEvalTeacher">ประเมินครูผู้สอน</a>
                 </li>
             </ul>
         </li>

@@ -1,6 +1,7 @@
 <?php
-
+session_start();
 require_once("config.kpswreg.inc.php");
+require_once("lib.inc.php");
 // รับข้อมูลจากฟอร์ม
 $role=$_REQUEST['role'];
 $user = $_POST['username'];
@@ -55,13 +56,14 @@ switch($role){
 }
 
 // SELECT users.UserID, users.user_name, users.FirstName, users.LastName, users.Profile, users.Email, users.PhoneNumber, users.JoinDate, users.Status FROM users JOIN parents ON users.UserID = parents.UserID WHERE users.user_name = 'somchai' AND users.password = md5('password');
-// echo $sql;
+ echo $sql;
 // die();
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ss", $user, $pass);
 $stmt->execute();
 $stmt->bind_result($UID, $UserName, $FirstName, $LastName, $Profile, $Email, $PhoneNumber, $JoinDate, $Status);
+
 
 if ($stmt->fetch()) {
     // บันทึก session

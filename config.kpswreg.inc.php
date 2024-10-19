@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 // ตั้งค่าการเชื่อมต่อฐานข้อมูล
 $servername = "localhost";
 $username = "root";  // ชื่อผู้ใช้ฐานข้อมูล
@@ -17,5 +15,4 @@ if ($conn->connect_error) {
 /* else {
     echo "<h1>การเชื่อมต่อสำเร็จ</h1>";
 } */
-
 ?>

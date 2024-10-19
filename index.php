@@ -1,120 +1,12 @@
 <?php
-include("config.kpswreg.inc.php");
+session_start();
+require_once("config.kpswreg.inc.php");
+require_once("lib.inc.php");
 
 $role = (empty($_REQUEST["role"])) ? "guest" : $_REQUEST["role"];
 $do = (empty($_GET["do"])) ? "main" : $_GET["do"];
 
-function checkAction($do){
-	switch ($do) {
-		case "main":
-			include("main.php");
-			break;
-		case "studentMain":
-			include("maintenance.php");
-			break;
-		case "treeEvalTeacher":
-			include("maintenance.php");
-			break;
-		case "announceGrade":
-			include("maintenance.php");
-			break;
-		case "resetPassword":
-			include("maintenance.php");
-			break;
-		case "parentMain":
-			include("maintenance.php");
-			break;
-		case "treeTeacherMain":
-			include("maintenance.php");
-			break;
-		case "checkLogin":
-			include("checkLogin.php");
-			break;
-		default:
-			echo "<h1>ท่านไม่มีสิทธิ์ในการเข้าใช้งานระบบนี้!!!!</h1>";
-			break;
-	} // จบคำสั่ง switch($do)
-}
-
-function showNavbar($do){
-	switch ($do) {
-		case "main":
-			echo '<li class="breadcrumb-item">
-								<i class="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
-								<a href="index.php" class="text-decoration-none">Home</a>
-				  </li>
-				  <li class="breadcrumb-item text-secondary" aria-current="page">
-								Dashboard
-				  </li>';
-			break;
-		case "studentMain":
-			echo '<li class="breadcrumb-item">
-								<i class="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
-								<a href="index.php?role=student" class="text-decoration-none">Home</a>
-				  </li>
-				  <li class="breadcrumb-item text-secondary" aria-current="page">
-								ข้อมูลนักเรียน
-				  </li>';
-			break;
-		case "treeEvalTeacher":
-			echo '<li class="breadcrumb-item">
-								<i class="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
-								<a href="index.php?role=student" class="text-decoration-none">Home</a>
-				  </li>
-				  <li class="breadcrumb-item text-secondary" aria-current="page">
-								ประเมินครู
-				  </li>';
-			break;
-		case "announceGrade":
-			echo '<li class="breadcrumb-item">
-								<i class="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
-								<a href="index.php?role=student" class="text-decoration-none">Home</a>
-				  </li>
-				  <li class="breadcrumb-item text-secondary" aria-current="page">
-								ประกาศผลการเรียน
-				  </li>';
-			break;
-		case "resetPassword":
-			echo '<li class="breadcrumb-item">
-								<i class="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
-								<a href="index.php?role=student" class="text-decoration-none">Home</a>
-				  </li>
-				  <li class="breadcrumb-item text-secondary" aria-current="page">
-								เปลี่ยนรหัสผ่าน
-				  </li>';
-			break;
-		case "parentMain":
-			echo '<li class="breadcrumb-item">
-								<i class="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
-								<a href="index.php?role=parent" class="text-decoration-none">Home</a>
-				  </li>
-				  <li class="breadcrumb-item text-secondary" aria-current="page">
-								ข้อมูลนักเรียน
-				  </li>';
-			break;
-		case "treeTeacherMain":
-			echo '<li class="breadcrumb-item">
-								<i class="bi bi-house lh-1 pe-3 me-3 border-end border-dark"></i>
-								<a href="index.php?role=teacher" class="text-decoration-none">Home</a>
-				  </li>
-				  <li class="breadcrumb-item text-secondary" aria-current="page">
-								ข้อมูลนักเรียน
-				  </li>';
-			break;
-		default:
-			echo "";
-			break;
-	} // จบคำสั่ง switch($do)
-}
-
-function checkActive($do,$menu){
-	if(($do=="treeTeacherMain"||$do=="treeEvalTeacher")&&($do==$menu)){
-		echo ' active current-page';
-	}elseif($do==$menu){
-		echo ' class="active current-page"';
-	}
-}
-
+// print_r($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -150,6 +42,7 @@ function checkActive($do,$menu){
 
 		<!-- Toastify CSS -->
 		<link rel="stylesheet" href="assets/vendor/toastify/toastify.css" />
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 	</head>
 

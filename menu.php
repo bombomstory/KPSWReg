@@ -21,7 +21,7 @@ switch ($role) {
         <li<?=checkActive($do,"main");?>>
             <a href="index.php?role=student">
                 <i class="fs-3 bi bi-pie-chart"></i>
-                <span class="menu-text">Dashboard</span>
+                <span class="menu-text">หน้าหลัก</span>
             </a>
         </li>
 
@@ -32,14 +32,14 @@ switch ($role) {
             </a>
         </li>
     
-        <li  class="treeview<?=checkActive($do,"treeEvalTeacher");?>">
+        <li  class="treeview<?php echo checkActive($do,"treeEvalTeacher"); echo checkActive($do,"treeEvalAdvisor");?>">
             <a href="#!">
                 <i class="fs-3 bi bi-card-checklist"></i>
                 <span class="menu-text">ประเมินครู</span>
             </a>
             <ul class="treeview-menu">
                 <li>
-                    <a href="index.php?role=student&do=treeEvalTeacher">ประเมินครูที่ปรึกษา</a>
+                    <a href="index.php?role=student&do=treeEvalAdvisor">ประเมินครูที่ปรึกษา</a>
                 </li>
                 <li>
                     <a href="index.php?role=student&do=treeEvalTeacher">ประเมินครูผู้สอน</a>
@@ -50,7 +50,7 @@ switch ($role) {
         <li<?=checkActive($do,"announceGrade");?>>
             <a href="index.php?role=student&do=announceGrade">
                 <i class="fs-3 bi bi-mortarboard"></i>
-                <span class="menu-text">ประกาศผลการเรียน</span>
+                <span class="menu-text">ผลการเรียน</span>
             </a>
         </li>    
 
@@ -96,7 +96,7 @@ switch ($role) {
         <li<?=checkActive($do,"main");?>>
             <a href="index.php?role=parent">
                 <i class="bi bi-pie-chart"></i>
-                <span class="menu-text">Dashboard</span>
+                <span class="menu-text">หน้าหลัก</span>
             </a>
         </li>
 
@@ -110,7 +110,7 @@ switch ($role) {
         <li<?=checkActive($do,"announceGrade");?>>
             <a href="index.php?role=parent&do=announceGrade">
                 <i class="bi bi-mortarboard"></i>
-                <span class="menu-text">ประกาศผลการเรียน</span>
+                <span class="menu-text">ผลการเรียน</span>
             </a>
         </li>    
 
@@ -156,7 +156,7 @@ switch ($role) {
         <li<?=checkActive($do,"main");?>>
             <a href="index.php?role=teacher">
                 <i class="bi bi-pie-chart"></i>
-                <span class="menu-text">Dashboard</span>
+                <span class="menu-text">หน้าหลัก</span>
             </a>
         </li>
 
@@ -193,7 +193,7 @@ switch ($role) {
         <li<?=checkActive($do,"announceGrade");?>>
             <a href="index.php?role=teacher&do=announceGrade">
                 <i class="bi bi-mortarboard"></i>
-                <span class="menu-text">ประกาศผลการเรียน</span>
+                <span class="menu-text">ผลการเรียน</span>
             </a>
         </li>    
 
@@ -352,7 +352,7 @@ switch ($role) {
         <li<?=checkActive($do,"main");?>>
             <a href="index.php?role=teacher">
                 <i class="fs-3 bi bi-pie-chart"></i>
-                <span class="menu-text">Dashboard</span>
+                <span class="menu-text">หน้าหลัก</span>
             </a>
         </li>
 
@@ -435,7 +435,7 @@ switch ($role) {
         <li<?=checkActive($do,"main");?>>
             <a href="index.php?role=teacher">
                 <i class="bi bi-pie-chart"></i>
-                <span class="menu-text">Dashboard</span>
+                <span class="menu-text">หน้าหลัก</span>
             </a>
         </li>
 
@@ -518,7 +518,7 @@ switch ($role) {
         <li class="active current-page">
             <a href="index.php">
                 <i class="fs-3 bi bi-pie-chart"></i>
-                <span class="menu-text">Dashboard</span>
+                <span class="menu-text">หน้าหลัก</span>
             </a>
         </li>
      

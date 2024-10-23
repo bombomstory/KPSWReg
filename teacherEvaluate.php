@@ -12,22 +12,6 @@ include("config.kpswreg.inc.php");
                                     <i class="fs-3 bi bi-calendar2-check"></i>&nbsp; ภาคเรียนปัจจุบัน: ภาคเรียนที่ 1 ปีการศึกษา 2567
                                 </div>
 
-                                <!--
-								<div class="alert alert-warning" role="alert">
-									<div class="mb-3">
-										<i class="bi bi-exclamation-circle fs-1 me-2 lh-1"></i>
-									</div>
-									<h4 class="alert-heading">คำเตือน!</h4>
-									<p>
-										นักเรียนที่ยังไม่ได้ทำการประเมินครูที่ปรึกษาหรือครูผู้สอนในภาคเรียนนี้ จะไม่สามารถดูข้อมูลนักเรียนได้
-									</p>
-									<hr />
-									<p>
-										
-									</p>
-								</div>
-                                -->
-
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <div class="m-0">
@@ -43,7 +27,7 @@ $result1 = $conn->query($sql1);
 $i=0;
 if ($result1->num_rows > 0) {
 ?>
-                                            <label class="form-label">เลือกภาคเรียน/ปีการศึกษาเพื่อทำการประเมินครูที่ปรึกษา</label>
+                                            <label class="form-label">เลือกภาคเรียน/ปีการศึกษาเพื่อทำการประเมินครูผู้สอน</label>
                                             <select class="form-select" aria-label="Default select example" id="mySelect">
                                                 <option selected="" value="NaN">กรุณาเลือกภาคเรียนและปีการศึกษา</option>
 <?php
@@ -76,8 +60,24 @@ while($row1 = $result1->fetch_assoc()) {
 $TeacherID = (empty($_GET["T"])) ? "-" : $_GET["T"];
 $Semeter = (empty($_GET["S"])) ? "-" : $_GET["S"];
 $AcademicYear = (empty($_GET["Y"])) ? "-" : $_GET["Y"];
+$SubjectID  = (empty($_GET["C"])) ? "-" : $_GET["C"];
 
-if($TeacherID!="-"&&$TeacherID!="-"&&$AcademicYear!="-")
+if($SubjectID!="-")
+{
+    $row_teacher = getTeacherInfo($TeacherID);
+?>
+
+<div align="center">
+    <img src="assets/images/<?=$row_teacher["Profile"];?>" class="rounded-2 img-4x">
+    <br /><br />
+    <h5>แบบประเมินครูผู้สอนคุณครู<?=$row_teacher["FirstName"];?> <?=$row_teacher["LastName"];?> <br />
+        ประจำภาคเรียนที่ <?=$Semeter;?> ปีการศึกษา <?=$AcademicYear;?></h5>
+    <hr>
+</div>
+
+<?php
+// จบ if($SubjectID!="-")
+}elseif($TeacherID!="-"&&$TeacherID!="-"&&$AcademicYear!="-")
 {
     $row_teacher = getTeacherInfo($TeacherID);
 ?>
@@ -184,7 +184,6 @@ if ($result->num_rows > 0) {
     </div>
 </form>
 
-
 <?php
 } // จบ if($TeacherID!="-"&&$TeacherID!="-"&&$AcademicYear!="-")
 ?>
@@ -264,7 +263,7 @@ if($Submit=="sendEva"){
                                                 ?>
                                                 </b>
                                                 <br />
-                                                <a href="http://localhost/KPSWReg/index.php?role=student&do=treeEvalAdvisor">คลิกที่นี่เพื่อทำการประเมินอาจารย์ท่านอื่น</a>
+                                                <a href="index.php?role=student&do=treeEvalAdvisor">คลิกที่นี่เพื่อทำการประเมินอาจารย์ท่านอื่น</a>
                                             
 											</p>
 
@@ -294,7 +293,7 @@ if($Submit=="sendEva"){
 
                 if(selectedValue) {
                     $.ajax({
-                        url: "getData.php",
+                        url: "getDataTeacherEva.php",
                         method: "POST",
                         data: { value: selectedValue },
                         success: function(response) {

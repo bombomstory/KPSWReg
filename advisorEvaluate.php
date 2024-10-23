@@ -264,7 +264,7 @@ if($Submit=="sendEva"){
                                                 ?>
                                                 </b>
                                                 <br />
-                                                <a href="http://localhost/KPSWReg/index.php?role=student&do=treeEvalAdvisor">คลิกที่นี่เพื่อทำการประเมินอาจารย์ท่านอื่น</a>
+                                                <a href="index.php?role=student&do=treeEvalAdvisor">คลิกที่นี่เพื่อทำการประเมินอาจารย์ท่านอื่น</a>
                                             
 											</p>
 

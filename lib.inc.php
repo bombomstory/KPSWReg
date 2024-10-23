@@ -33,6 +33,29 @@ function getTeacherInfo($TeacherID){
     return $row;
 }
 
+function getClassroomID($userID,$AcademicYear){
+	include("config.kpswreg.inc.php");
+	$sql = "
+    	SELECT
+			cs.ClassroomID as ClassroomID
+		FROM
+			classroomstudents cs
+		JOIN
+			students s on s.StudentID = cs.StudentID
+		JOIN
+			users u on s.UserID = u.UserID
+		WHERE
+			cs.AcademicYear = $AcademicYear AND u.UserID = $userID";
+
+    $result = $conn->query($sql);
+    $i=0;
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+    }
+
+    return $row;
+}
+
 function checkAction($do){
 	switch ($do) {
 		case "main":
@@ -45,7 +68,7 @@ function checkAction($do){
 			include("advisorEvaluate.php");
 			break;
 		case "treeEvalTeacher":
-			include("maintenance.php");
+			include("teacherEvaluate.php");
 			break;
 		case "announceGrade":
 			include("maintenance.php");
@@ -173,6 +196,38 @@ function checkEvaluated($StudentID,$TeacherID,$Semester,$AcademicYear){
         StudentID = ".$StudentID." and
         TeacherID = ".$TeacherID." and
         Semester = '".$Semester."' and
+        AcademicYear = '".$AcademicYear."';";
+	
+	$result = $conn->query($sql);
+	$i=0;
+	if ($result->num_rows > 0) {
+		$row = true;
+	}else{
+		$row = false;
+	}
+
+    return $row;
+}
+
+function checkTeacSubjEvaluated($StudentID,$TeacherID,$SubjectID,$Semester,$AcademicYear){
+    include("config.kpswreg.inc.php");
+    $sql="
+    SELECT
+        distinct
+        EvaluationID,
+        StudentID,
+        TeacherID,
+		SubjectID, 
+        Semester,
+        AcademicYear,
+        Status 
+    FROM 
+        stuteasubjevaluations 
+    WHERE 
+        StudentID = ".$StudentID." and 
+        TeacherID = ".$TeacherID." and 
+		SubjectID = ".$SubjectID." and 
+        Semester = '".$Semester."' and 
         AcademicYear = '".$AcademicYear."';";
 	
 	$result = $conn->query($sql);

@@ -53,7 +53,7 @@ if (isset($_POST['value'])) {
     JOIN
         users sus on st.UserID = sus.UserID
     WHERE
-        av.AcademicYear = 2567 AND
+        av.AcademicYear = $acadyear AND
         av.Status = 1 AND
         sus.UserID = ".$_SESSION["userid"].";";
     

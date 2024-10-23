@@ -12,50 +12,45 @@ if (isset($_POST['value'])) {
     $v_result = explode("/", $value);
     $semeter = $v_result[0];
     $acadyear = $v_result[1];
+    $getClassroomID = getClassroomID($_SESSION["userid"],$acadyear);
+    $ClassroomID = $getClassroomID["ClassroomID"];
     echo "<label class=\"form-label\">"; 
     echo "รายชื่อคุณครูที่ปรึกษา ประจำภาคเรียนที่ ".$semeter;
     echo " ปีการศึกษา ".$acadyear;
     echo "</label>";
     $sql="
-    SELECT 
-        us.UserID,
-        us.FirstName as AdvFirstName,
-        us.LastName as AdvLastName,
-        us.Profile as Profile,
-        us.PhoneNumber as AdvPhoneNumber,
-        us.Status as Status,
-        te.TeacherID as TeacherID,
-        te.Position as Position,
-        cl.ClassroomID as ClassroomID,
-        cl.ClassroomName as ClassroomName,
-        te.DepartmentID as DepartmentID,
-        de.DepartmentName as DepartmentName,
-        cs.StudentID as StudentID,
-        sus.FirstName as FirstName,
-        sus.LastName as LastName,
-        av.AdvisorID as AdvisorID,
-        av.AcademicYear as AdvAcademicYear,
-        av.Status as AdvStatus
+    SELECT
+        ts.TeacherID as TeacherID,
+        ts.SubjectID as SubjectID,
+        ts.ClassroomID as ClassroomID,
+        ts.Semester as Semester,
+        ts.AcademicYear as AcademicYear,
+        tc.Position as Position,
+        ut.FirstName as FirstName,
+        ut.LastName as LastName,
+        ut.Profile as Profile,
+        ut.Email as Email,
+        ut.PhoneNumber as PhoneNumber,
+        sj.SubjectCode as SubjectCode,
+        sj.SubjectName as SubjectName, 
+        cr.ClassroomName as ClassroomName 
     FROM
-        teachers te
+        teachersubjects ts
     JOIN
-        users us ON us.UserID = te.UserID
+        subjects sj on ts.SubjectID = sj.SubjectID
     JOIN
-        advisors av ON te.TeacherID = av.TeacherID
+        classrooms cr on ts.ClassroomID = cr.ClassroomID
     JOIN
-        departments de ON te.DepartmentID = de.DepartmentID
+        classroomstudents cs on cr.ClassroomID = cs.ClassroomID
     JOIN
-        classrooms cl on av.ClassroomID = cl.ClassroomID
-    RIGHT JOIN
-        classroomstudents cs on cl.ClassroomID = cs.ClassroomID
+        teachers tc on ts.TeacherID = tc.TeacherID
     JOIN
-        students st on cs.StudentID = st.StudentID
+        users ut on ut.UserID = tc.UserID
     JOIN
-        users sus on st.UserID = sus.UserID
-    WHERE
-        av.AcademicYear = 2567 AND
-        av.Status = 1 AND
-        sus.UserID = ".$_SESSION["userid"].";";
+        students st on st.StudentID = cs.StudentID
+    JOIN
+        users us on st.UserID = us.UserID
+    WHERE ts.ClassroomID = $ClassroomID";
     
     $result = $conn->query($sql);
     $i=0;
@@ -68,12 +63,12 @@ if (isset($_POST['value'])) {
             <table class="table align-middle table-hover m-0">
                 <thead>
                     <tr>
-                        <th scope="col">ครูที่ปรึกษา</th>
+                        <th scope="col">ครูผู้สอน</th>
                         <th scope="col">ชื่อ - นามสกุล</th>
                         <th scope="col">ตำแหน่ง</th>
-                        <th scope="col">กลุ่มสาระการเรียนรู้</th>
-                        <th scope="col">ครูที่ปรึกษาประจำชั้น</th>
-                        <th scope="col">เบอร์โทรครูที่ปรึกษา</th>
+                        <th scope="col">รายวิชาที่สอน</th>
+                        <th scope="col">สำหรับชั้น</th>
+                        <th scope="col">เบอร์โทรครูผู้สอน</th>
                         <th scope="col">การประเมินครู</th>
                     </tr>
                 </thead>
@@ -89,20 +84,20 @@ while($row = $result->fetch_assoc()) {
                             <img class="rounded-circle img-3x me-2" src="assets/images/<?=$row["Profile"];?>"
                                 alt="Bootstrap Gallery" />
                         </th>
-                        <td><?=$row["AdvFirstName"];?> <?=$row["AdvLastName"];?></td>
+                        <td><?=$row["FirstName"];?> <?=$row["LastName"];?></td>
                         <td><?=$row["Position"];?></td>
-                        <td><?=$row["DepartmentName"];?></td>
+                        <td><?=$row["SubjectCode"];?> <?=$row["SubjectName"];?></td>
                         <td><?=$row["ClassroomName"];?></td>
-                        <td><?=$row["AdvPhoneNumber"];?></td>
+                        <td><?=$row["PhoneNumber"];?></td>
                         <td>
 <?php
-if(checkEvaluated($_SESSION["userid"],$row["TeacherID"],$semeter,$acadyear)){
+if(checkTeacSubjEvaluated($_SESSION["userid"],$row["TeacherID"],$row["SubjectID"],$semeter,$acadyear)){
 ?>
                             <i class="fs-3 bi bi-person-check"></i>
 <?php
 }else{
 ?>
-                            <a class="btn btn-info btn-sm" href="index.php?role=student&do=treeEvalAdvisor&T=<?=$row["TeacherID"];?>&S=<?=$semeter;?>&Y=<?=$row["AdvAcademicYear"];?>"><i class="fs-3 bi bi-ui-checks"></i></i>
+                            <a class="btn btn-info btn-sm" href="index.php?role=student&do=treeEvalTeacher&T=<?=$row["TeacherID"];?>&C=<?=$row["SubjectID"];?>&S=<?=$semeter;?>&Y=<?=$row["AcademicYear"];?>"><i class="fs-3 bi bi-ui-checks"></i></i>
                             </a>
 <?php
 }
